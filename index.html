@@ -32,3 +32,56 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your PWA Website</title>
+    <!-- Links to CSS files and other assets -->
+</head>
+<body>
+    <h1>Welcome to Our Website</h1>
+    <p>This is a Progressive Web App (PWA) example.</p>
+
+    <!-- Button for adding the site to the home screen -->
+    <button id="install-btn" style="display:none;">Add to Home Screen</button>
+
+    <script>
+        let deferredPrompt;
+
+        // For Android (Chrome)
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();  // Prevent the default prompt
+            deferredPrompt = e;
+
+            // Show the install button
+            const installButton = document.getElementById('install-btn');
+            installButton.style.display = 'block';
+
+            installButton.addEventListener('click', () => {
+                // Show the prompt for installation
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+        });
+
+        // For iOS (Safari)
+        if (navigator.userAgent.match(/iPhone|iPad|iPod/)) {
+            const installButton = document.getElementById('install-btn');
+            installButton.style.display = 'block';
+
+            installButton.addEventListener('click', () => {
+                alert("To add this site to your home screen, tap the 'Share' icon at the bottom of the screen, then select 'Add to Home Screen'.");
+            });
+        }
+    </script>
+</body>
+</html>
